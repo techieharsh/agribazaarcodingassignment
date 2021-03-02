@@ -1,27 +1,44 @@
-<%= form_with(model: user, local: true) do |form| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <%= form_with(model: user, local: true) do |form| %>
+      <% if user.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
-      <ul>
-        <% user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+          <ul>
+            <% user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: "form-control", disabled: params[:id].present? ? false : true %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :email %>
+        <%= form.text_field :email, class: "form-control", disabled: params[:id].present? ? false : true %>
+      </div>
+
+      <%= form.fields_for :address do |address| %>
+       <%= render 'address_fields', f: address %> 
+      <% end %>
+
+      <p><strong>Profile Pic</strong></p>
+      <%= avatar_for @user, size: 50 %>
+      <strong>Uplaod a Profile Pic:</strong>
+      <%= form.file_field :avatar %>
+
+      <div class="actions">
+        <%= form.submit class: "btn btn-lg btn-outline-primary btn-block" %>
+      </div>
+    <% end %>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
   </div>
+</div>
 
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.text_field :email %>
-  </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
